@@ -1,6 +1,4 @@
-# brand-mobile
-
-# Vue-Quiz-App
+# Quiz-App
 A platform to answer just few questions and get test summary afterwards.
 
 ## How To Deploy App
