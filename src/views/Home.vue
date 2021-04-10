@@ -31,6 +31,7 @@
               <li>
                 If no answer is selected before the time elapses, it is game over.
               </li>
+              <li>Do not use the back button else, you lose your progress.</li>
             </ol>
           </div>
         </template>
