@@ -47,7 +47,13 @@
         </div>
       </div>
       <div v-else class="text-center">
-        <p>No questions available</p>
+        <p class="d-flex justify-content-center align-items-center">
+          <span v-if="loading" class="d-flex justify-content-start align-items-center">
+            <b-spinner />
+            <span class="ml-2">fetching questions....</span>
+          </span>
+          <span v-else>No questions available</span>
+        </p>
       </div>
       <hr>
       <div
@@ -76,6 +82,7 @@ export default {
 	components: { bmaHeader },
   data() {
     return {
+      loading: false,
       timer: 120,
       stopWatch: null,
       questions: [],
@@ -90,17 +97,19 @@ export default {
   },
   methods: {
     async fetchQuestions () {
-      await fetch('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d24f646e-9ba9-45ba-a142-4fdd1f2368e4/questions.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210409%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210409T174942Z&X-Amz-Expires=86400&X-Amz-Signature=0efbcdc611f802f46d8f8db0fe556653e14db9d6602840257c7cd10e4fe228f9&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22questions.json%22')
-        .then(res => res.json())
-        .then(data => {
-          this.questions = data.data
-          setTimeout(() => {
-            this.startTimer ()
-          }, 1000);
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.loading = true;
+      await setTimeout(() => {
+        fetch(process.env.VUE_APP_URL)
+          .then(res => res.json())
+          .then(data => {
+            this.loading = false
+            this.questions = data.data
+            setTimeout(() => this.startTimer (), 1000);
+          })
+          .catch(err => {
+            this.loading = false
+          })
+      }, 300);
     },
     selectedAnswer (question, answer, isCorrect) {
       this.question = question
