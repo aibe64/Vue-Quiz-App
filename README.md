@@ -8,8 +8,8 @@ a. Netlify Directory Deployment
 b. Netlify Git-based Deployment
    - Run npm build on your project to ready the app's 'dist' publish directory.
    - Create a git repository and push the project unto the master or any branch of your choice.
-   - Sign in to https://netlify.com and select where your repo is (GitHub, GitLab, or BitBucket), and authenticate by clicking on the button that says “New Site from Git”.
-     Then search for the repo given the options and then set your public directory to 'dist'.
+   - Sign in to https://netlify.com, select new site from Git and select your repo(GitHub, GitLab, or BitBucket). Authenticate search for the repo given the options.
+   - Set your public directory to 'dist' and your build command to npm run build.
 
 ## How To Run App
 - Install Node and NPM
