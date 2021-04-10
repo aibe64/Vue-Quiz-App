@@ -2,7 +2,7 @@
   <div class="test">
     <section class="shadow">
       <bma-header />
-      <div class="q-timer d-flex justify-content-between align-items-center">
+      <div v-if="questions.length" class="q-timer d-flex justify-content-between align-items-center">
         <span>Question {{questionIndex + 1}} of {{questions.length}}</span>
         <span
             :class="{'text-danger': timer < 21}"
@@ -46,9 +46,12 @@
         <h3>GAME OVER</h3>
         </div>
       </div>
+      <div v-else class="text-center">
+        <p>No questions available</p>
+      </div>
       <hr>
       <div
-        v-if="timer !== 0"
+        v-if="questions.length && timer !== 0"
         class="next"
       >
         <button
@@ -87,7 +90,7 @@ export default {
   },
   methods: {
     async fetchQuestions () {
-      await fetch('../questions.json')
+      await fetch('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d24f646e-9ba9-45ba-a142-4fdd1f2368e4/questions.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210409%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210409T174942Z&X-Amz-Expires=86400&X-Amz-Signature=0efbcdc611f802f46d8f8db0fe556653e14db9d6602840257c7cd10e4fe228f9&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22questions.json%22')
         .then(res => res.json())
         .then(data => {
           this.questions = data.data
@@ -96,7 +99,7 @@ export default {
           }, 1000);
         })
         .catch(err => {
-
+          console.log(err)
         })
     },
     selectedAnswer (question, answer, isCorrect) {
@@ -158,7 +161,7 @@ export default {
   },
   beforeMount() {
     (!this.$route.params.user.country) ? this.$router.push('/') : false;
-    this.fetchQuestions ()
+    this.fetchQuestions()
   },
   watch: {
     timer (elapsedTime) {
