@@ -43,7 +43,7 @@
           v-else
           class="game-over d-flex justify-content-center align-items-center text-danger text-center h-100"
         >
-        <h3>GAME OVER</h3>
+          <h3>GAME OVER</h3>
         </div>
       </div>
       <div v-else class="text-center">
@@ -96,19 +96,12 @@ export default {
     }
   },
   methods: {
-    async fetchQuestions () {
+    fetchQuestions () {
       this.loading = true;
-      await setTimeout(() => {
-        fetch(process.env.VUE_APP_URL)
-          .then(res => res.json())
-          .then(data => {
-            this.loading = false
-            this.questions = data.data
-            setTimeout(() => this.startTimer (), 1000);
-          })
-          .catch(err => {
-            this.loading = false
-          })
+      setTimeout(() => {
+        this.loading = false
+        this.questions = require('../../public/questions.json').data
+        setTimeout(() => this.startTimer (), 1000);
       }, 300);
     },
     selectedAnswer (question, answer, isCorrect) {
